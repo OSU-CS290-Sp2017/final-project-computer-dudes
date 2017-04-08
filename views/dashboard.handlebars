@@ -1,0 +1,60 @@
+<h1>Dashboard</h1>
+
+<p>
+  <div id="chart"></div>
+</p>
+
+<!--
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Resource</th>
+      <th>Referrer</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  {{#each visits}}
+    <tr>
+      <td>{{title}}</td>
+      <td>{{resource}}</td>
+      <td>{{referrer}}</td>
+      <td>{{timestamp}}</td>
+    </tr>
+  {{/each}}
+</table>
+-->
+
+<script type="text/javascript">
+$(function () {
+  var rows = {{{ data }}};
+  console.log(rows);
+
+  var labels = rows.map((row) => new Date(row.minute));
+  labels.unshift("Time");
+
+  var data = rows.map((row) => row.count);
+  data.unshift("Visits");
+
+  var chart = c3.generate({
+      bindto: "#chart",
+      data: {
+          x: "Time",
+          xFormat: "%H:%M:%S",
+          columns: [
+            labels,
+            data
+          ],
+          type: "spline"
+      },
+      axis: {
+          x: {
+              type: 'timeseries',
+              tick: {
+                  format: "%H:%M:%S"
+              }
+          }
+      }
+  });
+});
+</script>

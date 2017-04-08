@@ -1,0 +1,16 @@
+<h1>Test</h1>
+
+<p>This is a sample page with the tracker embedded in it.</p>
+
+<script type="text/javascript">
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'weatherglass-tracker';
+    t.setAttribute('data-site-id', 'weatherglass-test');
+    t.src = "{{ track_js }}";
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
