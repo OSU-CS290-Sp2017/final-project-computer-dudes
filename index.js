@@ -17,10 +17,9 @@ app.set('view engine', 'handlebars');
 app.use(express.static('public'))
 app.use(morgan('combined'));
 
+const port = process.env.PORT;
 const params = url.parse(process.env.DATABASE_URL);
 const auth = params.auth.split(':');
-
-console.log(params);
 
 app.pool = new pg.Pool({
   user: auth[0],
@@ -37,6 +36,6 @@ app.get('/documentation', DocumentationController.index);
 app.get('/test', TestController.index);
 app.get('/track.gif', PixelController.create);
 
-app.listen(5000, () => {
-  console.log('Listening on 5000');
+app.listen(port, () => {
+  console.log('Listening on ' + port);
 });
