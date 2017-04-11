@@ -2,6 +2,7 @@ const express = require('express');
 const pg = require('pg');
 const handlebars = require('express-handlebars');
 const morgan = require('morgan');
+const url = require('url');
 
 const DashboardController = require('./controllers/dashboard_controller.js');
 const DocumentationController = require('./controllers/documentation_controller.js');
@@ -16,12 +17,17 @@ app.set('view engine', 'handlebars');
 app.use(express.static('public'))
 app.use(morgan('combined'));
 
+const params = url.parse(process.env.DATABASE_URL);
+const auth = params.auth.split(':');
+
+console.log(params);
+
 app.pool = new pg.Pool({
-  user: process.env.DB_USER,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT, 
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
   max: 10,
   idleTimeoutMillis: 30000,
 });
