@@ -1,60 +1,60 @@
 <h1>Dashboard</h1>
 
 <p>
-  <div id="chart"></div>
+  <div id="hourly-chart"></div>
 </p>
 
-<!--
-<table class="table table-condensed">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Resource</th>
-      <th>Referrer</th>
-      <th>Timestamp</th>
-    </tr>
-  </thead>
-  {{#each visits}}
-    <tr>
-      <td>{{title}}</td>
-      <td>{{resource}}</td>
-      <td>{{referrer}}</td>
-      <td>{{timestamp}}</td>
-    </tr>
-  {{/each}}
-</table>
--->
+<p>
+  <div id="daily-chart"></div>
+</p>
 
 <script type="text/javascript">
-$(function () {
-  var rows = {{{ data }}};
-  console.log(rows);
+  var hourlyVisits = {{{ hourlyVisits }}};
+  var dailyVisits = {{{ dailyVisits }}};  
 
-  var labels = rows.map((row) => new Date(row.minute));
-  labels.unshift("Time");
+  var axis = {
+      x: {
+          type: 'timeseries',
+          tick: {
+              format: "%H:%M:%S"
+          }
+      }
+  };
 
-  var data = rows.map((row) => row.count);
-  data.unshift("Visits");
-
-  var chart = c3.generate({
-      bindto: "#chart",
+  var hourlyChartParams = {
+      bindto: "#hourly-chart",
       data: {
           x: "Time",
           xFormat: "%H:%M:%S",
           columns: [
-            labels,
-            data
+              ["Time"].concat(hourlyVisits.map((row) => new Date(row.interval))),
+              ["Visits"].concat(hourlyVisits.map((row) => row.count)),
           ],
           type: "spline"
       },
-      axis: {
-          x: {
-              type: 'timeseries',
-              tick: {
-                  format: "%H:%M:%S"
-              }
-          }
+      axis: axis,
+      title: { 
+        text: 'Visits Per Minute (Last Hour)'
       }
-  });
-});
+  };
+
+  var dailyChartParams = {
+      bindto: "#daily-chart",
+      data: {
+          x: "Time",
+          xFormat: "%H:%M:%S",
+          columns: [
+            ["Time"].concat(dailyVisits.map((row) => new Date(row.interval))),
+            ["Visits"].concat(dailyVisits.map((row) => row.count))
+          ],
+          type: "spline"
+      },
+      axis: axis,
+      title: { 
+        text: 'Visits Per Hour (Last Day)'
+      }
+  }
+
+  c3.generate(hourlyChartParams);
+  c3.generate(dailyChartParams);
 </script>

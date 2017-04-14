@@ -5,13 +5,13 @@ class DashboardController {
 }
 
 DashboardController.index = (request, response) => {
-  const visits = new VisitRepository(request.app.pool).all();
-  const data = new VisitsPerMinuteQuery(request.app.pool).run();
+  const hourlyVisits = new VisitsPerMinuteQuery(request.app.pool).run('hour', 'minute');
+  const dailyVisits = new VisitsPerMinuteQuery(request.app.pool).run('day', 'hour');
 
-  Promise.all([data, visits]).then(values => {
+  Promise.all([hourlyVisits, dailyVisits]).then(values => {
     response.render('dashboard', {
-      data: JSON.stringify(values[0]),
-      visits: values[1],
+      hourlyVisits: JSON.stringify(values[0]),
+      dailyVisits: JSON.stringify(values[1]),
     });
   });
 };
