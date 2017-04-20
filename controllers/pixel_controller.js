@@ -14,7 +14,7 @@ PixelController.create = (request, response) => {
     user_agent: request.query.user_agent,
   }
 
-  repo.create(visit).then(results => res.send(200));
+  repo.create(visit).then(results => response.send(200));
 }
 
 module.exports = PixelController;
