@@ -3,8 +3,8 @@ const VisitRepository = require('../repositories/visit_repository.js');
 class PixelController {
 }
 
-PixelController.create = (request, response) => {
-  const repo = new VisitRepository(request.app.pool);
+PixelController.create = async (request, response) => {
+  const visitRepo = new VisitRepository(request.app.pool);
 
   const visit = {
     site_id: request.query.site_id,
@@ -14,7 +14,8 @@ PixelController.create = (request, response) => {
     user_agent: request.query.user_agent,
   }
 
-  repo.create(visit).then(results => response.send(200));
+  const result = await visitRepo.create(visit);
+  response.send(200);
 }
 
 module.exports = PixelController;

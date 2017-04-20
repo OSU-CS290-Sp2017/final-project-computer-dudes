@@ -5,28 +5,26 @@ const VisitsPerMinuteQuery = require('../queries/visits_per_minute_query.js');
 class DashboardController {
 }
 
-DashboardController.index = (request, response) => {
-  const sites = new SiteRepository(request.app.pool).all();
+DashboardController.index = async (request, response) => {
+  const siteRepo = new SiteRepository(request.app.pool);
+  const sites = await siteRepo.all();
 
-  Promise.all([sites]).then(values => {
-    response.render('dashboard/index', {
-      sites: values[0], 
-    });
+  response.render('dashboard/index', {
+    sites: sites, 
   });
 };
 
-DashboardController.show = (request, response) => {
+DashboardController.show = async (request, response) => {
   const siteId = request.params["siteId"];
+  const visitsPerMinuteQuery = new VisitsPerMinuteQuery(request.app.pool);
 
-  const hourlyVisits = new VisitsPerMinuteQuery(request.app.pool).run(siteId, 'hour', 'minute');
-  const dailyVisits = new VisitsPerMinuteQuery(request.app.pool).run(siteId, 'day', 'hour');
+  const hourlyVisits = await visitsPerMinuteQuery.run(siteId, 'hour', 'minute');
+  const dailyVisits = await visitsPerMinuteQuery.run(siteId, 'day', 'hour');
 
-  Promise.all([hourlyVisits, dailyVisits]).then(values => {
-    response.render('dashboard/show', {
-      siteId: siteId,
-      hourlyVisits: JSON.stringify(values[0]),
-      dailyVisits: JSON.stringify(values[1]),
-    });
+  response.render('dashboard/show', {
+    siteId: siteId,
+    hourlyVisits: JSON.stringify(hourlyVisits),
+    dailyVisits: JSON.stringify(dailyVisits),
   });
 };
 
