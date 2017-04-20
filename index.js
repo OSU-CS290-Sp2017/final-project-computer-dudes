@@ -32,6 +32,7 @@ app.pool = new pg.Pool({
 });
 
 app.get('/', DashboardController.index);
+app.get('/sites/:siteId', DashboardController.show);
 app.get('/documentation', DocumentationController.index);
 app.get('/test', TestController.index);
 app.get('/track.gif', PixelController.create);
