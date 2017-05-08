@@ -3,17 +3,20 @@ const pg = require('pg');
 const handlebars = require('express-handlebars');
 const morgan = require('morgan');
 const url = require('url');
+const cors = require('cors');
 
 const DashboardController = require('./controllers/dashboard_controller.js');
 const DocumentationController = require('./controllers/documentation_controller.js');
 const TestController = require('./controllers/test_controller.js');
 const PixelController = require('./controllers/pixel_controller.js');
+const VisitsOverTimeController = require('./controllers/reports/visits_over_time_controller.js');
 
 const app = express();
 
 app.engine('handlebars', handlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+app.use(cors());
 app.use(express.static('public'))
 app.use(morgan('combined'));
 
@@ -32,6 +35,7 @@ app.pool = new pg.Pool({
 });
 
 app.get('/', DashboardController.index);
+app.get('/sites/:siteId/reports/visits_over_time', VisitsOverTimeController.index);
 app.get('/sites/:siteId', DashboardController.show);
 app.get('/documentation', DocumentationController.index);
 app.get('/test', TestController.index);

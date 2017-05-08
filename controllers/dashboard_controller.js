@@ -10,7 +10,7 @@ DashboardController.index = async (request, response) => {
   const sites = await siteRepo.all();
 
   response.render('dashboard/index', {
-    sites: sites, 
+    sites: sites,
   });
 };
 
