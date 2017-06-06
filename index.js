@@ -20,8 +20,8 @@ app.use(cors());
 app.use(express.static('public'))
 app.use(morgan('combined'));
 
-const port = process.env.PORT;
-const params = url.parse(process.env.DATABASE_URL);
+const port = process.env.PORT || 5000;
+const params = url.parse(process.env.DATABASE_URL || "postgres://jonahgeorge:@localhost/weatherglass_development");
 const auth = params.auth.split(':');
 
 app.pool = new pg.Pool({
@@ -35,8 +35,8 @@ app.pool = new pg.Pool({
 });
 
 app.get('/', DashboardController.index);
-app.get('/sites/:siteId/reports/visits_over_time', VisitsOverTimeController.index);
 app.get('/sites/:siteId', DashboardController.show);
+app.get('/sites/:siteId/reports/visits_over_time', VisitsOverTimeController.index);
 app.get('/documentation', DocumentationController.index);
 app.get('/test', TestController.index);
 app.get('/track.gif', PixelController.create);

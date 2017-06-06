@@ -1,8 +1,7 @@
 class DocumentationController {
-}
-
-DocumentationController.index = (request, response) => {
-  response.render('documentation', {});
+  static async index(request, response) {
+    response.render('documentation', {});
+  }
 }
 
 module.exports = DocumentationController;
