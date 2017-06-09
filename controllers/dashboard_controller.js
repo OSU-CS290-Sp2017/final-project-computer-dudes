@@ -1,12 +1,16 @@
 const SiteRepository = require('../repositories/site_repository.js');
 const VisitRepository = require('../repositories/visit_repository.js');
+const UserRepository = require('../repositories/user_repository.js');
 const VisitsPerMinuteQuery = require('../queries/visits_per_minute_query.js');
 
 class DashboardController {
   static async index(request, response) {
     const siteRepo = new SiteRepository(request.app.pool);
     const sites = await siteRepo.all();
-  
+ 
+    const userRepo = new UserRepository(request.app.pool);
+    const user = await userRepo.find(request.session.user_id);
+
     response.render('dashboard/index', {
       sites: sites,
     });

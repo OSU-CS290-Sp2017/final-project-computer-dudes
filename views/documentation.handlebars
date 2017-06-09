@@ -1,8 +1,10 @@
 <h1>Documentation</h1>
 
-<div class="card">
-  <pre>
-    <code>
+<div class='row'>
+  <div class='col-9'>
+    <h2 id='browser'>Browser</h2>
+
+    <figure class="highlight"><pre><code>
     &lt;script type="text/javascript">
       (function() {
         var t   = document.createElement('script');
@@ -14,5 +16,45 @@
         var s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(t, s);
       })();
-    &lt;/script></code></pre>
+    &lt;/script>
+    </pre></code></figure>
+
+    <br>
+
+    <h2 id='laravel'>Laravel</h2>
+
+    <a href="https://github.com/jonahgeorge/weatherglass-laravel">Github Repository</a>
+
+    <figure class="highlight"><pre><code>
+    composer require jonahgeorge/weatherglass-laravel
+    </pre></code></figure>
+
+    In <code>config/weatherglass.php</code> add your <code>site_id</code>.
+    <figure class="highlight"><pre><code>
+      return [
+        'site_id' => '<YOUR SITE ID>',
+      ];
+    </pre></code></figure>
+
+    In <code>app/Http/Kernel.php</code>, add the Weatherglass middleware to your web middleware group.
+    <figure class="highlight"><pre><code>
+    protected $middlewareGroups = [
+      'web' => [
+        \JonahGeorge\Middleware\Weatherglass::class,
+      ],
+    ];
+    </pre></code></figure>
+  </div>
+
+  <div class='col-3'>
+    Integrations
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" href="#browser">Browser</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#laravel">Laravel</a>
+      </li>
+    </ul>
+  </div>
 </div>

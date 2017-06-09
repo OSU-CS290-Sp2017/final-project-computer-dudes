@@ -1,7 +1,7 @@
 class Repository {
-	constructor(conn) {
-		this.conn = conn;
-	}
+  constructor(conn) {
+    this.conn = conn;
+  }
 }
 
 module.exports = Repository;

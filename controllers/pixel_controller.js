@@ -11,9 +11,9 @@ class PixelController {
       title: request.query.title,
       user_agent: request.query.user_agent,
     }
-  
+
     const result = await visitRepo.create(visit);
-    response.send(200);
+    response.sendStatus(200);
   }
 }
 

@@ -1,60 +1,21 @@
 <h1>{{siteId}}</h1>
 
-<p>
-  <div id="hourly-chart"></div>
-</p>
+<div class='row'>
+  <div class='col-md-6'>
+    <label>Traffic Over the Past Day (by hour)</label>
+    <div id="daily-chart" style="height: 300px; text-align: center; color: #999; line-height: 300px; font-size: 14px; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;">Loading...</div>
+    <script type='application/javascript'>
+    new Chartkick.LineChart('daily-chart', '/sites/{{siteId}}/reports/visits_over_time?interval=hour&range=day');
+    </script>
+  </div>
 
-<p>
-  <div id="daily-chart"></div>
-</p>
+  <div class='col-md-6'>
+    <label>Traffic Over the Past Month (by day)</label>
+    <div id="monthly-chart" style="height: 300px; text-align: center; color: #999; line-height: 300px; font-size: 14px; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;">Loading...</div>
+    <script type='application/javascript'>
+    new Chartkick.LineChart('monthly-chart', '/sites/{{siteId}}/reports/visits_over_time?interval=day&range=month');
+    </script>
+  </div>
+</div>
 
-<script type="text/javascript">
-  var hourlyVisits = {{{ hourlyVisits }}};
-  var dailyVisits = {{{ dailyVisits }}};  
 
-  var axis = {
-      x: {
-          type: 'timeseries',
-          tick: {
-              format: "%H:%M:%S"
-          }
-      }
-  };
-
-  var hourlyChartParams = {
-      bindto: "#hourly-chart",
-      data: {
-          x: "Time",
-          xFormat: "%H:%M:%S",
-          columns: [
-              ["Time"].concat(hourlyVisits.map((row) => new Date(row.interval))),
-              ["Visits"].concat(hourlyVisits.map((row) => row.count)),
-          ],
-          type: "spline"
-      },
-      axis: axis,
-      title: { 
-        text: 'Visits Per Minute (Last Hour)'
-      }
-  };
-
-  var dailyChartParams = {
-      bindto: "#daily-chart",
-      data: {
-          x: "Time",
-          xFormat: "%H:%M:%S",
-          columns: [
-            ["Time"].concat(dailyVisits.map((row) => new Date(row.interval))),
-            ["Visits"].concat(dailyVisits.map((row) => row.count))
-          ],
-          type: "spline"
-      },
-      axis: axis,
-      title: { 
-        text: 'Visits Per Hour (Last Day)'
-      }
-  }
-
-  c3.generate(hourlyChartParams);
-  c3.generate(dailyChartParams);
-</script>
