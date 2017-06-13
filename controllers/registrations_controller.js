@@ -1,6 +1,7 @@
+const ApplicationController = require('./application_controller.js');
 const UserRepository = require('../repositories/user_repository.js');
 
-class RegistrationsController {
+class RegistrationsController extends ApplicationController {
   static async create(request, response) {
     response.render('registrations/create', {});
   }
@@ -8,7 +9,7 @@ class RegistrationsController {
   static async store(request, response) {
     const userRepo = new UserRepository(request.app.pool);
 
-    const user = await userRepo.insert(request.body['name'], 
+    const user = await userRepo.insert(request.body['name'],
       request.body['email'], request.body['password']);
 
     if (user) {

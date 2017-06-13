@@ -1,6 +1,7 @@
+const ApplicationController = require('./application_controller.js');
 const UserRepository = require('../repositories/user_repository.js');
 
-class SessionsController {
+class SessionsController extends ApplicationController {
   static async create(request, response) {
     response.render("sessions/create", {});
   }
@@ -23,6 +24,8 @@ class SessionsController {
   }
 
   static async destroy(request, response) {
+    request.session.user_id = null;
+    response.redirect('/');
   }
 }
 

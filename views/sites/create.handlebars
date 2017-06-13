@@ -1,0 +1,12 @@
+<h1>New Site</h1>
+
+<form action="/sites" method="post">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input name="name" type="text" class="form-control" required value="{{ site.name }}"/>
+  </div>
+
+  <div class="form-group">
+    <input type="submit" class="btn btn-secondary">
+  </div>
+</form>

@@ -1,9 +1,10 @@
+const ApplicationController = require('./application_controller.js');
 const VisitRepository = require('../repositories/visit_repository.js');
 
-class PixelController {
+class PixelController extends ApplicationController {
   static async create(request, response) {
     const visitRepo = new VisitRepository(request.app.pool);
-  
+
     const visit = {
       site_id: request.query.site_id,
       resource: request.query.resource,

@@ -1,4 +1,4 @@
-const express = require('express'); 
+const express = require('express');
 const pg = require('pg');
 const handlebars = require('express-handlebars');
 const morgan = require('morgan');
@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const PostgresSessionStore = require('connect-pg-simple')(session);
 const flash = require('connect-flash');
+const methodOverride = require('method-override')
 
 const weatherglass = require('./middleware/weatherglass.js');
 const router = require('./router.js');
@@ -45,10 +46,13 @@ app.use((req, res, next) => {
   res.locals.messages = req.flash();
   next();
 });
+app.use((req, res, next) => {
+  res.locals.userId = req.session.user_id;
+  next();
+});
 
 router(app);
 
 app.listen(port, () => {
   console.log('Listening on ' + port);
 });
-
